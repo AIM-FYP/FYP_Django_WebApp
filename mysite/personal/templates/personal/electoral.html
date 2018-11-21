@@ -1,8 +1,538 @@
 {% extends "personal/header.html" %}
 
+
 {% block content %}
 
 <p>Hey, welcome to Electoral page!</p>
 
+{% load static %}
+<script src="{% static "personal/js/resultsMidEval.json" %}"></script>
+<script src="{% static "personal/js/boundsMidEval.json" %}" ></script>
+
+<style>
+  /* Always set the map height explicitly to define the size of the div
+* element that contains the map. */
+
+  #map {
+    height: 100%;
+  }
+
+  /* Optional: Makes the sample page fill the window. */
+
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  html,
+  body,
+  #map {
+    height: 100%;
+    margin-top: 20;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .nicebox {
+    position: absolute;
+    text-align: center;
+    font-family: "Roboto", "Arial", sans-serif;
+    font-size: 13px;
+    z-index: 5;
+    box-shadow: 0 4px 6px -4px #333;
+    padding: 5px 10px;
+    background: rgb(255, 255, 255);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(245, 245, 245, 1) 100%);
+    border: rgb(229, 229, 229) 1px solid;
+  }
+
+  #controls {
+    top: 120px;
+    left: 10px;
+    width: 360px;
+    height: 45px;
+  }
+
+  #data-box {
+    top: 190px;
+    left: 10;
+    height: 45px;
+    line-height: 45px;
+    display: none;
+  }
+
+  #census-variable {
+    width: 360px;
+    height: 20px;
+  }
+
+  #legend {
+    display: flex;
+    display: -webkit-box;
+    padding-top: 7px
+  }
+
+  .color-key {
+    background: linear-gradient(to right, hsl(5, 69%, 54%) 0%, hsl(29, 71%, 51%) 17%, hsl(54, 74%, 47%) 33%, hsl(78, 76%, 44%) 50%, hsl(102, 78%, 41%) 67%, hsl(127, 81%, 37%) 83%, hsl(151, 83%, 34%) 100%);
+    flex: 1;
+    -webkit-box-flex: 1;
+    margin: 0 5px;
+    text-align: left;
+    font-size: 1.0em;
+    line-height: 1.0em;
+  }
+
+  #data-value {
+    font-size: 2.0em;
+    font-weight: bold
+  }
+
+  #data-label {
+    font-size: 2.0em;
+    font-weight: normal;
+    padding-right: 10px;
+  }
+
+  #data-label:after {
+    content: ':'
+  }
+
+  #data-caret {
+    margin-left: -5px;
+    display: none;
+    font-size: 14px;
+    width: 14px
+  }
+
+</style>
+
+
+
+
+  <script>
+    var mapStyle = [{
+      'stylers': [{
+        'visibility': 'off'
+      }]
+    }, {
+      'featureType': 'landscape',
+      'elementType': 'geometry',
+      'stylers': [{
+        'visibility': 'on'
+      }, {
+        'color': '#fcfcfc'
+      }]
+    }, {
+      'featureType': 'water',
+      'elementType': 'geometry',
+      'stylers': [{
+        'visibility': 'on'
+      }, {
+        'color': '#bfd4ff'
+      }]
+    }];
+
+
+    var map;
+
+    var partyColors=[['255', '12', '0'],
+                     ['255', '131', '0'],
+                     ['255', '200', '0'],
+                     ['100', '255', '0'],
+                     ['30', '255', '0'],
+                     ['0', '255', '40'],
+                     ['0', '255', '230'],
+                     ['0', '190', '255'],
+                     ['0', '100', '255'],
+                     ['0', '20', '255'],
+                     ['200', '0', '255'],
+                     ['220', '140', '242'],
+                     ['255', '0', '230'],
+                     ['255', '0', '160'],
+                     ['255', '0', '120'],
+                     ['20', '60', '20'],
+                     ['133', '160', '133'],
+                     ['188', '255', '188'],
+                     ['64', '71', '32'],
+                     ['127','112','73']
+                    ]  
+
+    var uniqueParties;
+
+      var censusMin = Number.MAX_VALUE,
+      censusMax = -Number.MAX_VALUE;
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 6,
+        center: {
+          lat: 30.3753,
+          lng: 69.3451
+        },
+        styles: [
+            {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+{
+    "featureType": "water",
+    "elementType": "all",
+    "stylers": [
+        {
+            "visibility": "simplified"
+        },
+        {
+            "hue": "#e9ebed"
+        },
+        {
+            "saturation": -78
+        },
+        {
+            "lightness": 67
+        }
+    ]
+},
+{
+    "featureType": "landscape",
+    "elementType": "all",
+    "stylers": [
+        {
+            "visibility": "simplified"
+        },
+        {
+            "hue": "#ffffff"
+        },
+        {
+            "saturation": -100
+        },
+        {
+            "lightness": 100
+        }
+    ]
+},
+{
+    "featureType": "road",
+    "elementType": "geometry",
+    "stylers": [
+        {
+            "visibility": "simplified"
+        },
+        {
+            "hue": "#bbc0c4"
+        },
+        {
+            "saturation": -93
+        },
+        {
+            "lightness": 31
+        }
+    ]
+},
+{
+    "featureType": "poi",
+    "elementType": "all",
+    "stylers": [
+        {
+            "visibility": "off"
+        },
+        {
+            "hue": "#ffffff"
+        },
+        {
+            "saturation": -100
+        },
+        {
+            "lightness": 100
+        }
+    ]
+},
+{
+    "featureType": "road.local",
+    "elementType": "geometry",
+    "stylers": [
+        {
+            "visibility": "simplified"
+        },
+        {
+            "hue": "#e9ebed"
+        },
+        {
+            "saturation": -90
+        },
+        {
+            "lightness": -8
+        }
+    ]
+},
+{
+    "featureType": "transit",
+    "elementType": "all",
+    "stylers": [
+        {
+            "visibility": "on"
+        },
+        {
+            "hue": "#e9ebed"
+        },
+        {
+            "saturation": 10
+        },
+        {
+            "lightness": 69
+        }
+    ]
+},
+{
+    "featureType": "administrative.locality",
+    "elementType": "all",
+    "stylers": [
+        {
+            "visibility": "on"
+        },
+        {
+            "hue": "#2c2e33"
+        },
+        {
+            "saturation": 7
+        },
+        {
+            "lightness": 19
+        }
+    ]
+},
+{
+    "featureType": "road",
+    "elementType": "labels",
+    "stylers": [
+        {
+            "visibility": "on"
+        },
+        {
+            "hue": "#746855"
+        },
+        {
+            "saturation": -93
+        },
+        {
+            "lightness": 31
+        }
+    ]
+},
+{
+    "featureType": "road.arterial",
+    "elementType": "labels",
+    "stylers": [
+        {
+            "visibility": "simplified"
+        },
+        {
+            "hue": "#746855"
+        },
+        {
+            "saturation": -93
+        },
+        {
+            "lightness": -2
+        }
+    ]
+}
+]						
+
+      });
+
+      // set up the style rules and events for google.maps.Data
+      map.data.setStyle(styleFeature);
+      map.data.addListener('mouseover', mouseInToRegion);
+      map.data.addListener('mouseout', mouseOutOfRegion);
+
+      var selectBox = document.getElementById('census-variable');
+      google.maps.event.addDomListener(selectBox, 'change', function() {
+        clearCensusData();
+        loadCensusData(selectBox.options[selectBox.selectedIndex].value);
+      });
+
+      // NOTE: This uses cross-domain XHR, and may not work on older browsers.
+      map.data.loadGeoJson(
+        '/static/personal/js/boundsMidEval.json', {
+          idPropertyName: 'name'
+        });
+
+      // wait for the request to complete by listening for the first feature to be
+      // added
+      google.maps.event.addListenerOnce(map.data, 'addfeature', function() {
+        google.maps.event.trigger(document.getElementById('census-variable'),
+          'change');
+      });
+    }
+
+    function loadCensusData(variable) {
+          // load the requested variable from the census API (using local copies)
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', variable);
+        xhr.onload = function() {
+
+        var totalParties=[];
+
+        var censusData = JSON.parse(xhr.responseText);
+        censusData.shift(); // the first row contains column names
+        censusData.forEach(function(row) {
+
+            //console.log(row[0]+' : '+row[3]);
+            var censusVariable = parseFloat(row[3]);
+
+            //console.log(row[1]);    
+            totalParties.push(row[1]);        
+
+
+            var stateId = row[0];
+
+            //console.log( stateId +' : ' +String(censusVariable));
+
+
+
+            // keep track of min and max values
+            if (censusVariable < censusMin && censusVariable!=0) {
+                censusMin = censusVariable;
+            }
+            if (censusVariable > censusMax) {
+                censusMax = censusVariable;
+            }
+
+            // update the existing row with the new data
+            map.data
+            .getFeatureById(stateId)
+            .setProperty('census_variable', censusVariable);
+            map.data
+            .getFeatureById(stateId)
+            .setProperty('party_name', row[1]);
+
+
+        });
+
+        uniqueParties = Array.from(new Set(totalParties));     
+        console.log('party size: '+uniqueParties.length);
+        // update and display the legend
+        document.getElementById('census-min').textContent =
+        censusMin.toLocaleString();
+        document.getElementById('census-max').textContent =
+        censusMax.toLocaleString();
+        };
+        xhr.send();
+    }
+
+
+    /** Removes census data from each shape on the map and resets the UI. */
+    function clearCensusData() {
+      censusMin = Number.MAX_VALUE;
+      censusMax = -Number.MAX_VALUE;
+      map.data.forEach(function(row) {
+        row.setProperty('census_variable', undefined);
+        row.setProperty('party_name', undefined);
+      });
+      document.getElementById('data-box').style.display = 'none';
+      document.getElementById('data-caret').style.display = 'none';
+    }
+
+    /**
+     * Applies a gradient style based on the 'census_variable' column.
+     * This is the callback passed to data.setStyle() and is called for each row in
+     * the data set.  Check out the docs for Data.StylingFunction.
+     *
+     * @param {google.maps.Data.Feature} feature
+     */
+    function styleFeature(feature) {      
+      // determine whether to show this shape or not
+      var showRow = true;
+      if (feature.getProperty('census_variable') == null ||
+        isNaN(feature.getProperty('census_variable'))) {
+        showRow = false;
+      }
+      var colorIndex=0;
+      if (showRow = true){
+          var partyName=feature.getProperty('party_name');
+          if (partyName!=undefined) {
+              console.log('down: '+partyName+' : '+feature.getProperty('census_variable'));
+              colorIndex=uniqueParties.indexOf(partyName);
+          }
+      }
+
+      var color = partyColors[colorIndex];
+
+      var outlineWeight = 0.5,
+        zIndex = 1;
+      if (feature.getProperty('state') === 'hover') {
+        outlineWeight = zIndex = 2;
+      }
+
+      return {
+        strokeWeight: outlineWeight,
+        strokeColor: '#fff',
+        zIndex: zIndex,
+        fillColor: 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')',
+        fillOpacity: 0.55,
+        visible: showRow
+      };
+    }
+
+    /**
+     * Responds to the mouse-in event on a map shape (state).
+     *
+     * @param {?google.maps.MouseEvent} e
+     */
+    function mouseInToRegion(e) {
+      // set the hover state so the setStyle function can change the border
+      e.feature.setProperty('state', 'hover');
+
+      var percent = (e.feature.getProperty('census_variable') - censusMin) /
+        (censusMax - censusMin) * 100;
+
+      // update the label
+      document.getElementById('data-label').textContent =
+        e.feature.getProperty('name');
+      document.getElementById('data-value').textContent =
+        e.feature.getProperty('census_variable').toLocaleString();
+      document.getElementById('data-box').style.display = 'block';
+      document.getElementById('data-caret').style.display = 'block';
+      document.getElementById('data-caret').style.paddingLeft = percent + '%';
+    }
+
+    /**
+     * Responds to the mouse-out event on a map shape (state).
+     *
+     * @param {?google.maps.MouseEvent} e
+     */
+    function mouseOutOfRegion(e) {
+      // reset the hover state, returning the border to normal
+      e.feature.setProperty('state', 'normal');
+    }
+
+  </script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTuxXsgHcVPEQEi4spLn7w_KHOMrCBVcY&callback=initMap">
+</script>
+  
+
+
+<div id="controls" class="nicebox">
+<div>
+    <select id="census-variable">
+  
+        <option value="/static/personal/js/resultsMidEval.json">Votes polled from districts</option>
+        <option value="https://storage.googleapis.com/mapsdevsite/json/DP05_0017E">Some other thing</option>
+        <option value="https://storage.googleapis.com/mapsdevsite/json/DP05_0001E">Some other thing</option>
+        <option value="https://storage.googleapis.com/mapsdevsite/json/DP02_0016E">Some other thing</option>
+        <option value="https://storage.googleapis.com/mapsdevsite/json/DP03_0088E">Some other thing</option>
+    </select>
+</div>
+    <div id="legend">
+        <div id="census-min">min</div>
+        <div class="color-key"><span id="data-caret">&#x25c6;</span></div>
+        <div id="census-max">max</div>
+    </div>
+</div>
+<div id="data-box" class="nicebox">
+    <label id="data-label" for="data-value"></label>
+    <span id="data-value"></span>
+</div>
+<div id="map"></div>
 
 {% endblock %}
