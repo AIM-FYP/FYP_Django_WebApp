@@ -77,7 +77,7 @@ div.blueTable {
 
 /* Div Style created from DivTable.com */
 
-.divTableRow { display: block; /*margin:15px;*/ margin-top: 15px;margin-bottom: 15px;}
+.divTableRow { display: block; margin:15px;/*margin-top: 15px;margin-bottom: 15px;*/}
 .divTableHeading { display: table-header-group;}
 .divTableCell, .divTableHead { display: block;}
 .divTableHeading { display: table-header-group;}

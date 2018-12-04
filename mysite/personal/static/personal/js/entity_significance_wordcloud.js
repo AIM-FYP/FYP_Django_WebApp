@@ -1,7 +1,7 @@
 
 
 /* Entity Significance WordCloud */
-
+/* 55 words! */
 var Data = [
     {
         'text':'scandals',

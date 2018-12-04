@@ -44,7 +44,8 @@ color: {
 
 },
 size: {
-    height: 250
+    height: 300,
+    width : 300
 }
 });
 
