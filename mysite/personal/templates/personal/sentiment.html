@@ -1,8 +1,24 @@
 {% extends "personal/header.html" %}
 
 {% block content %}
+    
 
-<p>Hey, welcome to sentiment page!</p>
+  
 
+
+
+
+
+
+
+<!-- Data Extraction -->
+
+<script>
+    foo= {{ content | safe }};
+    console.log(foo);
+    for(i in foo) {
+        alert (i+' : '+ foo[i]);
+    }
+</script>
 
 {% endblock %}

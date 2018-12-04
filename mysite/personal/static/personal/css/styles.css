@@ -1,0 +1,84 @@
+/* To align clock icon */
+.iwt {
+  position: relative;
+  margin-top: 10px;
+}
+
+.text_iwt {
+  display: inline-block;
+  line-height: 40px;
+  float:right;
+}
+
+.img_iwt {
+  display: inline-block;
+  position: absolute;
+  top: 8px;
+  margin-left: 90%;
+}
+
+/* To fill body with bgcolor and eliminate horizontalscrolling */
+.bodystyle{
+    background-color: #fcfbf8;
+    overflow-x:hidden;
+}
+
+/* To make shadow of boxes used for each content */
+#demo {
+-webkit-box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.19); 
+box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.19);
+}
+
+/* Buf fixes */
+span.clear { clear: left; display: block; }
+
+/* Table styles for block used for each content  */
+div.blueTable {
+  font-family:  sans-serif;
+  background-color: #fcfbf8;
+  width: 100%;
+  text-align: left;
+  
+}
+/*inside box*/
+.divTable.blueTable .divTableCell, .divTable.blueTable .divTableHead {
+  padding: 5px 15px;
+ 
+
+}
+.divTable.blueTable .divTableBody .divTableCell {
+  font-size: 13px;
+  background-color:white;
+
+ 
+}
+.mainHeading{
+  font-size: 20px;
+  font-weight: lighter;
+  color:black;
+ 
+}
+.divTable.blueTable .divTableHeading {
+  background: #fcfbf8;
+
+  
+}
+.divTable.blueTable .divTableHeading .divTableHead {
+  font-size: 15px;
+  font-weight: lighter;
+  color: #5E5E5E;
+ 
+
+}
+
+.c3-chart-arc text {
+    fill: black;
+}    
+
+/* Div Style created from DivTable.com */
+
+.divTableRow { display: block; /*margin:15px;*/ margin-top: 15px;margin-bottom: 15px;}
+.divTableHeading { display: table-header-group;}
+.divTableCell, .divTableHead { display: block;}
+.divTableHeading { display: table-header-group;}
+.divTableFoot { display: table-footer-group;}

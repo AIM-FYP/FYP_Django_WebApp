@@ -1,6 +1,345 @@
 {% extends "personal/header.html" %}
 
 {% block content %}
-<p>Hey, welcome to my website! I am a programmer!</p>
-{% include "personal/includes/htmlsnippet.html" %}
+
+
+<!-- ************************************** -->
+<!-- ************************************** -->
+<!-- ************************************** -->
+<!--   intelliVision WEB App - Home_Page    -->
+<!-- ************************************** -->
+<!-- ************************************** -->
+<!-- ************************************** -->
+
+
+<br><br>    
+      
+<div class="container">
+  <div class="row">
+        <div class="col-lg-4"> 
+             <div class="divTable blueTable">
+             <div class="divTableHeading">
+                                <div class="divTableRow">
+                                    <div class="divTableHead">
+                                        
+                                        <div class="mainHeading">
+                                        Raw Tweets
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            </div> 
+            </div>
+          </div>
+       </div>
+</div>
+    
+<div id="rawtweets" class="container">
+  <div class="row">
+    <div id="leftdiv" class="col-lg-4">
+        
+                          <div class="divTable blueTable">
+
+                            <div class="divTableHeading">
+                                <div class="divTableRow">
+                                    <div class="divTableHead" >Top Positive Tweets</div>
+                                </div>
+                            </div>   
+
+                            <div class="divTableBody">
+                            <!-- *****  Tweets here ***** -->     
+                            </div>     
+                        </div>
+  </div>  
+      
+      
+    <div id="middiv" class="col-lg-4">
+      
+                        <div class="divTable blueTable">
+
+                        <div class="divTableHeading">
+                            <div class="divTableRow">
+                                <div class="divTableHead">Top Negative Tweets</div>
+                            </div>
+                        </div>   
+
+                        <div class="divTableBody">
+                        <!-- *****  Tweets here ***** -->     
+                        </div>     
+    </div>
+        
+      
+      </div>
+      <div id="rightdiv" class="col-lg-4">
+
+                          <div class="divTable blueTable">
+
+                        <div class="divTableHeading">
+                            <div class="divTableRow">
+                                <div class="divTableHead">Top Neutral Tweets</div>
+                            </div>
+                        </div>   
+
+                        <div class="divTableBody">
+                        <!-- *****  Tweets here ***** -->     
+                        </div>     
+                    </div>         
+      </div>
+    
+  </div>
+  
+</div>
+    
+     
+    <div class="container">
+      <div class="row">
+            <div class="col-lg-4"> 
+                 <div class="divTable blueTable">
+                 <div class="divTableHeading">
+                    <div class="divTableRow">
+                        <div class="divTableHead">
+
+                            <div class="mainHeading">
+                                Entity Significance
+                            </div>
+
+                        </div>
+                    </div>
+                 </div> 
+                </div>
+              </div>
+           </div>
+    </div>
+    
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8"> 
+                 
+                <!-- Word Cloud Here -->
+                <div class="divTable blueTable">
+                    <div class="divTableBody">
+                    
+                        <div id="demo" class="divTableRow">
+
+                            <div class="divTableCell">
+                                <div id="wordcloud2">
+                                    <!-- Generic Word Cloud Here -->
+                                </div>
+
+                            </div>
+                        </div>   
+                    </div>     
+                </div>
+                
+                
+              
+            </div>
+            
+            <div class="col-lg-4"> 
+                 
+                <!-- Bar Chart Here -->
+              <div class="divTable blueTable">
+                    <div class="divTableBody">
+                    
+                        <div id="demo" class="divTableRow">
+
+                            <div class="divTableCell">
+                                 <div id="barchart1"></div>
+
+                            </div>
+                        </div>   
+                    </div>     
+                </div>
+               
+                
+                
+                
+            </div>
+            
+            
+        </div>
+    </div>
+
+
+
+
+    
+    <div class="container">
+      <div class="row">
+            <div class="col-lg-4"> 
+                 <div class="divTable blueTable">
+                 <div class="divTableHeading">
+                    <div class="divTableRow">
+                        <div class="divTableHead">
+
+                            <div class="mainHeading">
+                            Sentiments Summary
+                            </div>
+
+                        </div>
+                    </div>
+                </div> 
+                </div>
+              </div>
+           </div>
+    </div>
+    
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4" style="margin-top: 25px"> 
+
+                <div class="container">
+                  <div class="row">
+                        <div class="col-lg-4"> 
+                            <div class="divTable blueTable">
+                                <div class="divTableBody">
+                                <!-- *****  Guage here ***** --> 
+                                    <div id="demo" class="divTableRow">
+
+                                        <div class="divTableCell">
+                                            <div id="guage">
+                                            </div>
+                                        </div>
+                                    </div>   
+                                </div>     
+                            </div>
+                      </div>
+
+
+
+
+                       </div>
+                </div>
+                <div class="container">
+                  <div class="row">
+
+                      <div class="col-lg-4"> 
+                            <div class="divTable blueTable">
+                                <div class="divTableBody">
+                                <!-- *****  Donut here ***** --> 
+                                    <div id="demo" class="divTableRow">
+
+                                        <div class="divTableCell">
+                                            <div id="donut">
+                                            </div>
+                                        </div>
+                                    </div>   
+                                </div>     
+                            </div>
+                      </div>
+ 
+                    </div>
+                </div>
+    
+                
+            </div>
+         
+            <div class="col-lg-4"> 
+                
+                
+                            <div class="container">
+                  <div class="row">
+                        <div class="col-lg-4"> 
+                            <div class="divTable blueTable">
+                                <div class="divTableBody">
+                                <!-- *****  Guage here ***** --> 
+                                    <div id="demo" class="divTableRow">
+
+                                        <div class="divTableCell">
+                                            
+                                <br>
+                                <h8>
+                                
+                                    Figures are shown based on tweets extracted for selected politician.
+                                    <br><br>
+                                    Average sentiments and contributing sentiments is visualized.
+                                    <br><br>
+                                    Area Chart and Scatter Plot is drawn to visualize sentiment points for each sentiment class.
+                                    
+                                    
+                                </h8>
+                                <br>
+                               
+                                <br>    
+                                        </div>
+                                    </div>   
+                                </div>     
+                            </div>
+                      </div>
+
+
+
+
+                       </div>
+                </div>
+                <div class="container">
+                  <div class="row">
+
+                      <div class="col-lg-4"> 
+                            <div class="divTable blueTable">
+                                <div class="divTableBody">
+                                <!-- *****  Donut here ***** --> 
+                                    <div id="demo" class="divTableRow">
+
+                                        <div class="divTableCell">
+                                            <div id="wordcloud1">
+                                                <!-- Generic Word Cloud Here -->
+                                            </div>
+                                            
+                                        </div>
+                                    </div>   
+                                </div>     
+                            </div>
+                      </div>
+                      
+                     
+                      
+                      
+                      
+                      
+                    </div>
+                </div>
+       
+   
+            
+            </div>
+            
+            <div class="col-lg-4" style="margin-top: 110px">
+                
+                
+                
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4"> 
+                            <div class="divTable blueTable">
+                                <div class="divTableBody">
+                                <!-- *****  Guage here ***** --> 
+                                    <div id="demo" class="divTableRow">
+
+                                        <div class="divTableCell">
+                                            <div id="chart1">
+                                            </div>
+                                        </div>
+                                    </div>   
+                                </div>     
+                            </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    
+    
+    </div>    
+
+
+<!-- small snippet includes -->
+<!-- {% include "personal/includes/htmlsnippet.html" %} -->
+
 {% endblock %}
+
+
+	
