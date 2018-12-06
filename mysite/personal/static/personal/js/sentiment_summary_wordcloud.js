@@ -98,10 +98,10 @@ function wordCloud(selector) {
 
 
 
-    var wordScale = d3.scaleLinear().range([6,70]);
+    var wordScale = d3.scaleLinear().range([7,43]);
     wordScale
-        .domain([d3.min(words, function(d){return d.size; }),
-                 d3.max(words, function(d){return d.size; })
+        .domain([d3.min(sentiment_summary_word_Data, function(d){return d._size; }),
+                 d3.max(sentiment_summary_word_Data, function(d){return d._size; })
 
     ]);
 
@@ -117,9 +117,9 @@ function wordCloud(selector) {
 
 
     //Draw the word cloud
-    function draw(words) {
+    function draw(sentiment_summary_word_Data) {
         var cloud = svg.selectAll("g text")
-                        .data(words, function(d) { return d.text; })
+                        .data(sentiment_summary_word_Data, function(d) { return d.text; })
 
         //Entering words
         cloud.enter()
@@ -127,14 +127,14 @@ function wordCloud(selector) {
             .style("font-family", "Impact")
             .style("fill", function(d, i) { return fill(i); })
             .attr("text-anchor", "middle")
-            .attr('font-size', function(d) { return wordScale(d.size) + "px"; })
+            .attr('font-size', 0)//function(d) { return wordScale(d._size) + "px"; }
             .text(function(d) { return d.text; });
 
         //Entering and existing words
         cloud
             .transition()
                 .duration(600)
-                .style("font-size", function(d) { return wordScale(d.size) + "px"; })
+                .style("font-size", function(d) { return wordScale(d._size) + "px"; })
                 .attr("transform", function(d) {
                     return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
                 })
@@ -159,13 +159,13 @@ function wordCloud(selector) {
         // asycnhronously call draw when the layout has been computed.
         //The outside world will need to call this function, so make it part
         // of the wordCloud return value.
-        update: function(words) {
+        update: function(sentiment_summary_word_Data) {
             d3.layout.cloud().size([width, height])
-                .words(words)
+                .words(sentiment_summary_word_Data)
                 .padding(0)
                 .rotate(function() { return 0/*~~(Math.random() * 2) * 90*/; })
                 .font("Impact")
-                .fontSize(function(d) { return wordScale(d.size); })
+                .fontSize(function(d) { return wordScale(d._size); })
                 .on("end", draw)
                 .start();
         }
@@ -186,7 +186,7 @@ function getWords() {
 //In reality the new words would probably come from a server request,
 // user input or some other source.
 function showNewWords(cloudObj) {
-    cloudObj.update(words/*getWords()*/);
+    cloudObj.update(sentiment_summary_word_Data/*getWords()*/);
     /* words updater function - aimancomment */
     setTimeout(function() { showNewWords(cloudObj)}, 2000);
 }

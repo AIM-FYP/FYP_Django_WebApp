@@ -139,6 +139,7 @@ def mywordcloudData(filename,topWords):
     sorted_x = sorted(words_d.items(), key=operator.itemgetter(1))
     
     sorted_x=sorted_x[-topWords:]
+
     
     wordcounts=[]
     for w in sorted_x:
@@ -291,19 +292,22 @@ def index(request):
         i_dict['entities'] = getEntities(c['processed'][i],b) 
         i_dict['sentiment'] = c['labels'][i]
         bardata.append(i_dict)
-    
-    
     entity_significance_bar_Data = bardata
+    
+    
+    
+    a,b,c  =  mywordcloudData(BASE_DIR+"/personal/static/personal/csv/test.xlsx",21)
+    sentiment_summary_word_Data=a
     
     
     raw_tweets_Data              = json.dumps(raw_tweets_Data)
     sentiment_summary_donut_Data = json.dumps(sentiment_summary_donut_Data)
-    #sentiment_summary_word_Data  = json.dumps(sentiment_summary_word_Data)
+    sentiment_summary_word_Data  = json.dumps(sentiment_summary_word_Data)
     entity_significance_wordcloud_Data= json.dumps(entity_significance_wordcloud_Data)
     entity_significance_bar_Data = json.dumps(entity_significance_bar_Data)
     sentiment_summary_linechart_Data= json.dumps(sentiment_summary_linechart_Data)
     
-    return render(request, 'personal/home.html',{"raw_tweets_Data":raw_tweets_Data,"sentiment_summary_donut_Data":sentiment_summary_donut_Data,"entity_significance_wordcloud_Data":entity_significance_wordcloud_Data,"entity_significance_bar_Data":entity_significance_bar_Data,"sentiment_summary_linechart_Data":sentiment_summary_linechart_Data,"sentiment_summary_linechart_Data":sentiment_summary_linechart_Data})
+    return render(request, 'personal/home.html',{"raw_tweets_Data":raw_tweets_Data,"sentiment_summary_donut_Data":sentiment_summary_donut_Data,"sentiment_summary_word_Data":sentiment_summary_word_Data,"entity_significance_wordcloud_Data":entity_significance_wordcloud_Data,"entity_significance_bar_Data":entity_significance_bar_Data,"sentiment_summary_linechart_Data":sentiment_summary_linechart_Data,"sentiment_summary_linechart_Data":sentiment_summary_linechart_Data})
 
     
 def electoral(request):
