@@ -192,7 +192,8 @@ def index(request):
     df['labels']=df['labels'].apply(lambda x: changeLabelNames(x))
     
     #Get time
-    df['time']=df['time'].apply(lambda x: str(x).split()[1][:-6])
+    df['tweet_time']=df['time'].apply(lambda x: str(x).split()[1][:-3])
+    df['line_time']=df['time'].apply(lambda x: str(x).split()[1][:-6])
     
     #Raw Tweets Cell
     #cell1
@@ -210,12 +211,12 @@ def index(request):
     df=df.sort_values(['confidence'], ascending=[False]).reset_index()
     #cell5
     tweetdata=[]
-    for i in range(len(df[['text','labels','confidence','time']])):
+    for i in range(len(df[['text','labels','confidence','tweet_time']])):
         i_dict = {}
         i_dict['sentiment']=df['labels'][i]
         i_dict['percentage']=str(df['confidence'][i])
         i_dict['text']=df['text'][i]
-        i_dict['time']=df['time'][i]
+        i_dict['time']=df['tweet_time'][i]
 
         tweetdata.append(i_dict)
         
@@ -245,11 +246,11 @@ def index(request):
     sentiment_summary_donut_Data=percentdata
   
     
-    a=df.groupby(['time', 'labels']).size().reset_index(name='count') 
+    a=df.groupby(['line_time', 'labels']).size().reset_index(name='count') 
     
     d = {}
-    for i in a['time'].unique():
-        d[i] = [{a['labels'][j]: a['count'][j]} for j in a[a['time']==i].index]
+    for i in a['line_time'].unique():
+        d[i] = [{a['labels'][j]: a['count'][j]} for j in a[a['line_time']==i].index]
     
     arr=['pos','neg','neu']
     data=[]
