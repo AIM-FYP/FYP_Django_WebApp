@@ -4,9 +4,9 @@
 /* 55 words! */
 
 
-console.log("now nhanged!!!!!!!!!!");
-console.log("here : ",entity_significance_wordcloud_Data);
-var wordScale = d3.scaleLinear().range([15,30]);
+console.log("bingohingo!!!!!!!!!!");
+console.log("bingohingo : ",entity_significance_wordcloud_Data);
+var wordScale = d3.scaleLinear().range([12,45]);
     wordScale
         .domain([d3.min(entity_significance_wordcloud_Data, function(d){return d._size; }),
                  d3.max(entity_significance_wordcloud_Data, function(d){return d._size; })

@@ -103,9 +103,9 @@ def getEntities(tweet,words_d):
             arr.append(w)
     return arr
 
-def mywordcloudData(filname,topWords):
-    df = pd.read_excel(filname) 
-   
+def mywordcloudData(filename,topWords):
+    df = pd.read_excel(filename) 
+    df.head()
     labels=classificationModel.predict_example(list(np.array(df['text'])))
     df['labels']=labels
     df['labels']=df['labels'].apply(lambda x: changeLabelNames(x))
@@ -140,16 +140,32 @@ def mywordcloudData(filname,topWords):
     
     sorted_x=sorted_x[-topWords:]
     
+    wordcounts=[]
+    for w in sorted_x:
+        w=w[0]
+        wordcounts.append(fdist[w])
+        
+    firstquartile = np.percentile(wordcounts, 25)
+    thirdquartile = np.percentile(wordcounts, 75)
+    
     wordsData=[]
     for w in sorted_x:
         w=w[0]
         i_dict = {}
         i_dict['text']=w
         
-        i_dict['_size']=str(fdist[w])
+        wordcount=fdist[w]
+        
+      
+        if wordcount >= thirdquartile:
+            wordcount=int(thirdquartile)
+        
+        i_dict['_size']=str(wordcount)
         wordsData.append(i_dict)
         
+        
     return wordsData,sorted_x,df
+
 
 
 def index(request):
