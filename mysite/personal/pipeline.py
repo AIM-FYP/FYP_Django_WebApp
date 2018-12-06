@@ -258,6 +258,37 @@ class Classifier:
         tweet=self.custom_mark_neg(tweet)
         
         return tweet
+    
+    def preProcessingSubfunction2(self, tweet):
+        tweet=tweet.encode().decode("utf-8-sig")
+        tweet=tweet.replace(u"\ufffd", "?")
+        tweet=tweet.replace(u"\\u002c","")
+        tweet=re.sub('\s+', ' ', tweet)
+        
+        tweet=re.sub(r'[0-9]+(th|nd|st|rd)','',tweet)
+        
+        tweet=re.sub('@[A-Za-z0-9_]+|https?://[^ ]+|^(RT )|( RT )', ' ', tweet)
+        tweet=re.sub('www.[^ ]+', ' ', tweet)
+        tweet=BeautifulSoup(tweet, 'lxml').get_text()
+        tweet=re.sub(r"""["\?,$!@#\-$\\%\^&*()\[\]{}`“\/~\|._\+\-;<>=:]|'(?!(?<! ')[ts])""", "", tweet)
+        tweet=self.give_emoji_free_text(tweet)
+        tweet = apostrapheHandler(tweet)
+        #hash removal STARTS
+        #tweet=re.sub(r'#[a-z0-9]*','',tweet)
+        #hash removal ENDS
+        
+        #acronyms STARTS
+        tweet = re.sub(r'(.)\1+', r'\1\1', tweet)   
+        tweet = self.acronymHandler(tweet)
+        #acronyms ENDS
+        
+        tweet=re.sub(r"[0-9]","",tweet)
+        
+        #tweet=" ".join(mark_negation(tweet.split()))
+        #tweet=self.mark_neg(tweet)
+        tweet=self.custom_mark_neg(tweet)
+        
+        return tweet
  
     def acronymHandler(self, tweet):
         tokenizer = nltk.casual.TweetTokenizer()
@@ -326,14 +357,20 @@ class Classifier:
         
         test_tweet_counts = self.vectorizer.transform(self.test['processed_text'])
         return self.classifier.predict(test_tweet_counts)
-      
+    
+    def predict_example_proba(self, examples):
+    
+        processedTweets = pd.DataFrame(examples)[0].apply(lambda x: self.preProcessingSubfunction(x))
+        test_tweet_counts = self.vectorizer.transform(processedTweets)
+   
+        return self.classifier.predict_proba(test_tweet_counts)
     
     def predict_example(self, examples):
     
         processedTweets = pd.DataFrame(examples)[0].apply(lambda x: self.preProcessingSubfunction(x))
         test_tweet_counts = self.vectorizer.transform(processedTweets)
    
-        return logistic.classifier.predict(test_tweet_counts)
+        return self.classifier.predict(test_tweet_counts)
     
     
         

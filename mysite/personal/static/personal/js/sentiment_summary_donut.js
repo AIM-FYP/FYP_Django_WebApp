@@ -1,28 +1,15 @@
-/*  Sentiment Summary Donut!  */
-var Data=[
-  {  /* from collected percent positive percent negative percent neutral */
-      "pos":"50",
-      "neg":"30",
-      "neu":"20"
-  }
-];
+/*  Sentiment Summary Donut! */ 
 
 
-
-
-
-
-
-
-
+/* from collected percent positive percent negative percent neutral */
 
 var chart = c3.generate({
 bindto: '#donut',
 data: {
     columns: [
-        ['Positive', 50],
-        ['Negative', 30],
-        ['Neutral', 20]
+        ['Positive', sentiment_summary_donut_Data[0]['pos']],
+        ['Negative', sentiment_summary_donut_Data[0]['neg']],
+        ['Neutral' , sentiment_summary_donut_Data[0]['neu']]
     ],
     type : 'donut'//,
     //onclick: function (d, i) { console.log("onclick", d, i); },

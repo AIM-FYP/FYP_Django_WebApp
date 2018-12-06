@@ -1,6 +1,6 @@
 
 /* Entity Significance Bar Chart */
-var Data = [
+/*var Data = [
     {
         "entities":['Corruption','Kulsoom'],
         "sentiment":'neg'
@@ -135,7 +135,7 @@ var Data = [
         "entities":['research','retro'],
         "sentiment":'neu'
     }
-];
+];*/
 
 function getStats(word){
     var posCount=0;
@@ -144,7 +144,7 @@ function getStats(word){
 
     if (word=='#none'){
 
-        Data.forEach(function(d) {
+        entity_significance_bar_Data.forEach(function(d) {
             if (d.sentiment=='pos'){
                 posCount+=1;
             }
@@ -159,7 +159,7 @@ function getStats(word){
     }
     else{
 
-        Data.forEach(function(d) {
+        entity_significance_bar_Data.forEach(function(d) {
             if (d.entities.includes(word)){
                 if (d.sentiment=='pos'){
                 posCount+=1;

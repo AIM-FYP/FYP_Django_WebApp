@@ -1,62 +1,62 @@
-var Data = [
+
     /* Group By time - count(pos),count(neg),count(neu) */
     /* Displays number of sentiment counts for a candidate selected  */
-    { 
-        "pos":"32",
-        "neg":"76",
-        "neu":"54",
-        "time":"19:02"
-    },
-    { 
-        "pos":"32",
-        "neg":"76",
-        "neu":"54",
-        "time":"19:03"
-    },
-    { 
-        "pos":"32",
-        "neg":"76",
-        "neu":"54",
-        "time":"19:04"
-    },
-    { 
-        "pos":"32",
-        "neg":"76",
-        "neu":"54",
-        "time":"19:05"
-    },
-    { 
-        "pos":"32",
-        "neg":"76",
-        "neu":"54",
-        "time":"19:06"
-    },
-    { 
-        "pos":"32",
-        "neg":"76",
-        "neu":"54",
-        "time":"19:07"
-    }    
-];
+ 
+console.log('bingo!');
 
+x=['x'];
 
+positives=[];
+positives.push('pos');
 
+negatives=[];
+negatives.push('neg')
 
+neutrals=[];
+neutrals.push('neu')
 
+console.log("b4func",sentiment_summary_linechart_Data);
 
+for (i in sentiment_summary_linechart_Data){
+    console.log("Tweet: ",sentiment_summary_linechart_Data[i]);
+    positives.push(sentiment_summary_linechart_Data[i].pos);
+    negatives.push(sentiment_summary_linechart_Data[i].neg);
+    neutrals.push(sentiment_summary_linechart_Data[i].neu);
+    x.push(sentiment_summary_linechart_Data[i].time);
+}
+console.log(negatives);
+console.log(positives);
+console.log(neutrals);
+console.log(x);
 /* Sentiment Summary Barchart */
+
+
 var chart = c3.generate({
     bindto: '#chart1',
     data: {
+        x: 'x',
+        xFormat: '%H', // 'xFormat' can be used as custom format of 'x'
         columns: [
-            ['pos', 67,56,43,45,67,87,65,45,67,43,23,56,87],
-            ['neg', 89,34,54,34,65,34,55,67,65,88,77,55,43],
-            ['neu', 12,21,23,12,32,45,23,43,32,12,32,43,54]
-        ],
-        types: {
-            pos: 'spline',
-            neg: 'spline',
-            neu: 'spline',
+            x,
+            positives,
+            negatives,
+            neutrals
+        ]
+    },
+    axis: {
+        x: {
+            type: 'timeseries',
+            tick: {
+                count:function(d){
+                    if ((sentiment_summary_linechart_Data.length)<=5){
+                        return sentiment_summary_linechart_Data.length;
+                    }
+                    else{
+                        return 5;
+                    } 
+                },
+                format: '%H:00'
+            }
         }
     },
     size: {
@@ -64,14 +64,11 @@ var chart = c3.generate({
         height: 300
     },
     padding: {
-        /*20 b4*/
+       
       right: 20
     },
     color: {
         pattern: ['#38ed62', '#e35e57', '#4a69e6']
-
     }
-
 });
-
 

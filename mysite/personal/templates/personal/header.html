@@ -78,27 +78,51 @@
 </head>
 
 <body class="bodystyle" style="color:#5E5E5E">
-    <!--
-    <nav class="container navbar navbar-expand-lg navbar-light" style="background-color: white;">
-      <a class="navbar-brand" href="#">
-      <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-       Approval Rating
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
+    <script>
+        /*    *******************    */
+        /*    *******************    */
+        /* *** Global Variables ***  */
+        /*    *******************    */
+        /*    *******************    */
+        var candidateIndex=0;
+        console.log("1");
+        $('#debug').click(function(){
+           console.log('adasdasd'); 
+        });
+        
+        
+        
+        /*    *******************    */
+        /*    *******************    */
+        /* *** Global Functions ***  */
+        /*    *******************    */
+        /*    *******************    */
+        function changeSelection(index){
+            console.log("candidate : ",index);
+            candidateIndex=index;  
+        }
+        function myscroll(index){
+            console.log('function enetered: ',index);
+            if (index=='0'){
+                var elmnt = document.getElementById("scrollRawTweets");
+                console.log("elem : ",elmnt);
+                elmnt.scrollIntoView();
+            }
+            if (index=='1'){
+                var elmnt = document.getElementById("scrollEntitySignificance");
+                console.log("elem : ",elmnt);
+                elmnt.scrollIntoView();
+            }
+            if (index=='2'){
+                
+                window.scroll(500,1700);
+                console.log('condition true!!!!!!',window.scrollY);
+            }
             
-          <a class="nav-item nav-link active" href='/'>Home<span class="sr-only">(current)</span></a>
-          <a class="nav-item nav-link" href='/personal/sentiment/'>Sentiment</a>
-          <a class="nav-item nav-link" href='/personal/electoral/'>Electoral</a>
-          <a class="nav-item nav-link" href='/contact/'>Contact</a>
-
-        </div>
-      </div>
-    </nav>
-    -->
+            
+        }
+        
+    </script>
     
     <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:black;" >
       <div class="container">
@@ -117,16 +141,20 @@
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li class="active"><a  href="/">Home <span class="sr-only">(current)</span></a></li>
-            <li><a  href='/personal/sentiment/'>Sentiment</a></li>
-            <li><a  href='/personal/electoral/'>Electoral</a></li>
-            <li><a  href='/contact/'>Contact</a></li>
+          <ul class="nav navbar-nav" role="menu">
+            <li class="active"><a onClick="myscroll('0');" href="#">Raw Tweets<span class="sr-only">(current)</span></a></li>
+            <li><a onClick="myscroll('1');" href='#' >Entity Significance</a></li>
+            <li ><a onClick="myscroll('2');" href='#' >Sentiments Summary</a></li>  
+              
+              
+            <!--<li><a  href='/personal/sentiment/'>Sentiment</a></li>-->
+            <!--<li><a  href='/personal/electoral/'>Electoral</a></li>-->
+            <!--<li><a  href='/contact/'>Contact</a></li>-->
             <li class="dropdown">
               <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Candidate <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Imran Khan</a></li>
-                <li><a href="#">Nawaz Sharif</a></li>
+                <li><a onClick="changeSelection('0');"  href="#">Imran Khan</a></li>
+                <li><a onClick="changeSelection('1');"  href="#">Nawaz Sharif</a></li>
 
                 <!--<li class="divider"></li>
                 <li><a href="#">One more separated link</a></li>-->
@@ -152,9 +180,21 @@
     </div>
 	
 	
-	
+    <script>
+        
+        raw_tweets_Data                 = {{ raw_tweets_Data              | safe }};
+        sentiment_summary_donut_Data    = {{ sentiment_summary_donut_Data | safe }};
+        //sentiment_summary_word_Data     = {{ sentiment_summary_word_Data  | safe }};
+        entity_significance_wordcloud_Data   = {{ entity_significance_wordcloud_Data  | safe }};
+        entity_significance_bar_Data    = {{ entity_significance_bar_Data  | safe }};
+        sentiment_summary_linechart_Data= {{ sentiment_summary_linechart_Data | safe}}
+        
+        
+        console.log("here1 : ",entity_significance_wordcloud_Data);
+        console.log("here2 : ",sentiment_summary_linechart_Data);
+    </script>>
 
-
+    
     <script src="{% static 'personal/js/raw_tweets.js' %}"></script>
 
     <script src="{% static 'personal/js/sentiment_summary_donut.js' %}"></script>
