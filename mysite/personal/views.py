@@ -8,7 +8,12 @@ import operator
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
+import re
 
+def removeURL(tweet):
+    tweet=re.sub('@[A-Za-z0-9_]+|https?://[^ ]+|^(RT )|( RT )', '', tweet)
+    tweet=re.sub('www.[^ ]+', '', tweet)
+    return tweet
 
 
 def changeLabelNames(x):
@@ -157,7 +162,8 @@ def mywordcloudData(filename,topWords):
         
         wordcount=fdist[w]
         
-      
+        if wordcount<=firstquartile:
+            wordcount=int(firstquartile)
         if wordcount >= thirdquartile:
             wordcount=int(thirdquartile)
         
@@ -169,8 +175,8 @@ def mywordcloudData(filename,topWords):
 
 
 
-def index(request):
-    
+
+def index(request,num='0'):
     # ********************************************************* #
     # ********************************************************* #
     # ********************************************************* #
@@ -179,15 +185,37 @@ def index(request):
     # ****************                       ****************** #
     # ********************************************************* #
     # ********************************************************* #
+    
+    #  Change candidate files
+    _file_Path=''
+    if num=='0':
+        _file_Path  = BASE_DIR+"/personal/static/personal/csv/ImranKhan.xlsx"
+    elif num=='1':
+        _file_Path  = BASE_DIR+"/personal/static/personal/csv/NawazSharif.xlsx"
+    elif num=='2':
+        _file_Path  = BASE_DIR+"/personal/static/personal/csv/MaryamNawaz.xlsx"
+    elif num=='3':
+        _file_Path  = BASE_DIR+"/personal/static/personal/csv/Zardari.xlsx"
+    elif num=='4':
+        _file_Path  = BASE_DIR+"/personal/static/personal/csv/ShehbazSharif.xlsx"
+    elif num=='5':
+        _file_Path  = BASE_DIR+"/personal/static/personal/csv/SheikhRashid.xlsx"
+    elif num=='6':
+        _file_Path  = BASE_DIR+"/personal/static/personal/csv/AsadUmar.xlsx"
+    elif num=='7':
+        _file_Path  = BASE_DIR+"/personal/static/personal/csv/BilawalBhutto.xlsx"
 
+        
     #  Read
     #{% static 'personal/js/c3.min.js' %}
     
-    df = pd.read_excel(BASE_DIR+"/personal/static/personal/csv/test.xlsx") 
+    df = pd.read_excel(_file_Path) 
     #  Predict
-    
+   
     labels=classificationModel.predict_example(list(np.array(df['text'])))
     df['labels']=labels
+    
+    df['text']=df['text'].apply(lambda x: removeURL(x))
     
     df['labels']=df['labels'].apply(lambda x: changeLabelNames(x))
     
@@ -211,13 +239,45 @@ def index(request):
     df=df.sort_values(['confidence'], ascending=[False]).reset_index()
     #cell5
     tweetdata=[]
+    #display only two for now
+    _positiveC=0
+    _negativeC=0
+    _neutralC =0
     for i in range(len(df[['text','labels','confidence','tweet_time']])):
         i_dict = {}
+        
+        if(_positiveC==2 and _negativeC==2 and _neutralC==2):
+            break
+        '''
+        if df['labels'][i]=='pos' and _positiveC<2:
+            i_dict['sentiment']=df['labels'][i]
+            i_dict['percentage']=str(df['confidence'][i])
+            i_dict['text']=df['text'][i]
+            i_dict['time']=df['tweet_time'][i]
+            
+            _positiveC+=1
+            
+        if df['labels'][i]=='neg' and _negativeC<2:
+            i_dict['sentiment']=df['labels'][i]
+            i_dict['percentage']=str(df['confidence'][i])
+            i_dict['text']=df['text'][i]
+            i_dict['time']=df['tweet_time'][i]
+            
+            _negativeC+=1
+            
+        if df['labels'][i]=='neu' and _neutralC<2:
+            i_dict['sentiment']=df['labels'][i]
+            i_dict['percentage']=str(df['confidence'][i])
+            i_dict['text']=df['text'][i]
+            i_dict['time']=df['tweet_time'][i]
+            
+            _neutralC+=1
+        '''
         i_dict['sentiment']=df['labels'][i]
         i_dict['percentage']=str(df['confidence'][i])
         i_dict['text']=df['text'][i]
         i_dict['time']=df['tweet_time'][i]
-
+        
         tweetdata.append(i_dict)
         
     raw_tweets_Data=tweetdata
@@ -284,7 +344,7 @@ def index(request):
     
     sentiment_summary_linechart_Data=data
     
-    a,b,c  =  mywordcloudData(BASE_DIR+"/personal/static/personal/csv/test.xlsx",55)
+    a,b,c  =  mywordcloudData(_file_Path,55)
     entity_significance_wordcloud_Data=a
     
     bardata = []
@@ -297,7 +357,7 @@ def index(request):
     
     
     
-    a,b,c  =  mywordcloudData(BASE_DIR+"/personal/static/personal/csv/test.xlsx",21)
+    a,b,c  =  mywordcloudData(_file_Path,21)
     sentiment_summary_word_Data=a
     
     

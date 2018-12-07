@@ -85,11 +85,10 @@
         /*    *******************    */
         /*    *******************    */
         var candidateIndex=0;
-        console.log("1");
-        $('#debug').click(function(){
-           console.log('adasdasd'); 
-        });
+       
+        console.log("post <> req");
         
+  
         
         
         /*    *******************    */
@@ -99,32 +98,41 @@
         /*    *******************    */
         function changeSelection(index){
             console.log("candidate : ",index);
-            candidateIndex=index;  
+            candidateIndex=index; 
         }
         function myscroll(index){
-            console.log('function enetered: ',index);
+        
             if (index=='0'){
-                var elmnt = document.getElementById("scrollRawTweets");
-                console.log("elem : ",elmnt);
-                elmnt.scrollIntoView();
+                window.scroll(0,0);
             }
             if (index=='1'){
-                var elmnt = document.getElementById("scrollEntitySignificance");
-                console.log("elem : ",elmnt);
-                elmnt.scrollIntoView();
+                
+                var myElement = document.getElementById('scrollEntitySignificance');
+                var topPos = myElement.offsetTop;
+                console.log("toppos : ", topPos);
+                
+                window.scroll(0,topPos-130);
             }
             if (index=='2'){
                 
-                window.scroll(500,1700);
-                console.log('condition true!!!!!!',window.scrollY);
+            
+                var myElement = document.getElementById('scrollSentimentSummary');
+                var topPos = myElement.offsetTop;
+                console.log("toppos : ", topPos);
+                
+                window.scroll(0,topPos);
+                
+               
             }
             
             
         }
         
+      
+        
     </script>
     
-    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:black;" >
+    <nav id="mynavbar" class="navbar navbar-inverse navbar-fixed-top" style="background-color:black;" >
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -142,19 +150,23 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav" role="menu">
-            <li class="active"><a onClick="myscroll('0');" href="#">Raw Tweets<span class="sr-only">(current)</span></a></li>
-            <li><a onClick="myscroll('1');" href='#' >Entity Significance</a></li>
-            <li ><a onClick="myscroll('2');" href='#' >Sentiments Summary</a></li>  
+            <li ><a href="javascript: onClick=myscroll('0')">Raw Tweets</a> <!--<span class="sr-only">(current)</span>--> </li> 
+            <li ><a href="javascript: onClick=myscroll('1')" >Entity Significance</a></li>
+            <li ><a href="javascript: onClick=myscroll('2')" >Sentiments Summary</a></li>  
               
-              
-            <!--<li><a  href='/personal/sentiment/'>Sentiment</a></li>-->
-            <!--<li><a  href='/personal/electoral/'>Electoral</a></li>-->
-            <!--<li><a  href='/contact/'>Contact</a></li>-->
+
             <li class="dropdown">
               <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Candidate <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a onClick="changeSelection('0');"  href="#">Imran Khan</a></li>
-                <li><a onClick="changeSelection('1');"  href="#">Nawaz Sharif</a></li>
+                <li><a   href="/personal/index/0">Imran Khan</a></li>
+                <li><a   href="/personal/index/1">Nawaz Sharif</a></li>
+                <li><a   href="/personal/index/2">Maryam Nawaz</a></li>
+                <li><a   href="/personal/index/3">Zardari</a></li>
+                <li><a   href="/personal/index/4">Shehbaz Sharif</a></li>
+                <li><a   href="/personal/index/5">Sheikh Rashid</a></li>
+                <li><a   href="/personal/index/6">Asad Umar</a></li>
+                <li><a   href="/personal/index/7">Bilawal Bhutto</a></li>
+             
 
                 <!--<li class="divider"></li>
                 <li><a href="#">One more separated link</a></li>-->

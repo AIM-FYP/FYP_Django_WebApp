@@ -4,9 +4,11 @@
 /* 55 words! */
 
 
-console.log("bingohingo!!!!!!!!!!");
-console.log("bingohingo : ",entity_significance_wordcloud_Data);
-var wordScale = d3.scaleLinear().range([12,45]);
+
+console.log("Data Rcvd : ",entity_significance_wordcloud_Data);
+//12,45 before
+console.log("Applying (7,43)");
+var wordScale = d3.scaleLinear().range([7,43]);
     wordScale
         .domain([d3.min(entity_significance_wordcloud_Data, function(d){return d._size; }),
                  d3.max(entity_significance_wordcloud_Data, function(d){return d._size; })
