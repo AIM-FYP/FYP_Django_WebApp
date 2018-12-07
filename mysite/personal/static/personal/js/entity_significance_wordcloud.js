@@ -7,6 +7,7 @@
 
 console.log("Data Rcvd : ",entity_significance_wordcloud_Data);
 //12,45 before
+
 console.log("Applying (7,43)");
 var wordScale = d3.scaleLinear().range([7,43]);
     wordScale

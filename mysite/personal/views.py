@@ -9,12 +9,15 @@ from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 import re
+import scipy
 
 def removeURL(tweet):
     tweet=re.sub('@[A-Za-z0-9_]+|https?://[^ ]+|^(RT )|( RT )', '', tweet)
     tweet=re.sub('www.[^ ]+', '', tweet)
     return tweet
 
+def normalize(values, bounds):
+    return [bounds['desired']['lower'] + (x - bounds['actual']['lower']) * (bounds['desired']['upper'] - bounds['desired']['lower']) / (bounds['actual']['upper'] - bounds['actual']['lower']) for x in values]
 
 def changeLabelNames(x):
     if x == 'Positive':
@@ -151,25 +154,30 @@ def mywordcloudData(filename,topWords):
         w=w[0]
         wordcounts.append(fdist[w])
         
-    firstquartile = np.percentile(wordcounts, 25)
-    thirdquartile = np.percentile(wordcounts, 75)
+    #firstquartile = np.percentile(wordcounts, 10)
+    #thirdquartile = np.percentile(wordcounts, 90)
     
+    wordcounts = [number/scipy.std(wordcounts) for number in wordcounts]
+    
+    #wordcounts=normalize(wordcounts,{'actual':{'lower':min(wordcounts),'upper':max(wordcounts)},'desired':{'lower':17,'upper':70}})
+    print(wordcounts)
+    ___i=0
     wordsData=[]
     for w in sorted_x:
         w=w[0]
         i_dict = {}
         i_dict['text']=w
         
-        wordcount=fdist[w]
+        #wordcount=fdist[w]
         
-        if wordcount<=firstquartile:
-            wordcount=int(firstquartile)
-        if wordcount >= thirdquartile:
-            wordcount=int(thirdquartile)
+        #if wordcount<=firstquartile:
+        #    wordcount=17
+        #if wordcount >= thirdquartile:
+        #    wordcount=70
         
-        i_dict['_size']=str(wordcount)
+        i_dict['_size']=str(wordcounts[___i])
         wordsData.append(i_dict)
-        
+        ___i+=1
         
     return wordsData,sorted_x,df
 
