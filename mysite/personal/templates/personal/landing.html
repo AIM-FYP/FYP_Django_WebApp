@@ -78,27 +78,30 @@
 </head>
 
 <body style="background-color:#fcfbf8;color:#5E5E5E">
-    <div class="container-fluid jumbotron" style="background-color:black;">
+    <div class="container-fluid jumbotron" style="background-color:black;height:60%;">
         <div class="container">
             <h1 style="color:white;margin-left:30px; "> 
                 {% load staticfiles %}
-             <img style="padding-bottom:5px;" src="{% static 'personal/img/logo.png' %}" alt="logo" width="50*6.03125" height="50"> 
+             <img style="padding-bottom:5px;" src="{% static 'personal/img/logo.png' %}" alt="logo" width="45*6.03125" height="45"> 
                 <br>
  
             </h1>
               <p style="color:lightgrey;margin-left:30px; ">Analyze Approval Rating of political candidates from tweets sentiments. Multiple visualizations to identity trends and events. </p>
+            <br>
               <p><a class="btn btn-primary btn-lg" style="margin-left:30px; " href="/personal/home">To App</a></p>
         
         </div>
     </div>
     
     <div class="container">
-        <h1>
+        <br>
+        <br>
+        <h2 style="margin-left:30px;">
         Why someone has to do it?
-        </h1>
-        <h6>
+        </h2>
+        <h5 style="margin-left:30px;"><br>
         Twitter is being populated with thousands of tweets every day. Number of tweets that are talking about politicians is somehow useless if we can't find an easy way to analyse the data. Just manually looking at the raw tweets doesn't scale, there's just too many of them. They remain unreasonable, unless we are aware of What are these people saying? What do they think? What are their opinions? How do they feel?
-            </h6>
+            </h5><br><br>
               <small style="padding-left:80%;color:#5E5E5E;">Approval Rating WebApp by - <cite title="Source Title">intelliVision</cite></small>
         
     </div>
