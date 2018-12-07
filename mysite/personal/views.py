@@ -13,6 +13,7 @@ import scipy
 
 def removeURL(tweet):
     tweet=re.sub('@[A-Za-z0-9_]+|https?://[^ ]+|^(RT )|( RT )', '', tweet)
+    tweet=re.sub('([\s]([^\s]+).com([^\s]+))','',tweet)
     tweet=re.sub('www.[^ ]+', '', tweet)
     return tweet
 
@@ -257,7 +258,7 @@ def index(request,num='6'):
         
         if(_positiveC==2 and _negativeC==2 and _neutralC==2):
             break
-       
+      
         if df['labels'][i]=='pos' and _positiveC<2:
             i_dict['sentiment']=df['labels'][i]
             i_dict['percentage']=str(df['confidence'][i])
@@ -281,9 +282,10 @@ def index(request,num='6'):
             i_dict['time']=df['tweet_time'][i]
             
             _neutralC+=1
-       
    
-        
+   
+  
+            
         tweetdata.append(i_dict)
         
     raw_tweets_Data=tweetdata
