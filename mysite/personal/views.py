@@ -160,7 +160,7 @@ def mywordcloudData(filename,topWords):
     wordcounts = [number/scipy.std(wordcounts) for number in wordcounts]
     
     #wordcounts=normalize(wordcounts,{'actual':{'lower':min(wordcounts),'upper':max(wordcounts)},'desired':{'lower':17,'upper':70}})
-    print(wordcounts)
+    #print(wordcounts)
     ___i=0
     wordsData=[]
     for w in sorted_x:
@@ -182,9 +182,10 @@ def mywordcloudData(filename,topWords):
     return wordsData,sorted_x,df
 
 
+def landing(request):
+    return render(request, 'personal/landing.html')
 
-
-def index(request,num='0'):
+def index(request,num='5'):
     # ********************************************************* #
     # ********************************************************* #
     # ********************************************************* #

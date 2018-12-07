@@ -1,0 +1,116 @@
+
+
+{% block content %}
+    <head>
+	<title>intelliVISION</title>
+    
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!--            css online includes         -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://bootswatch.com/3/superhero/bootstrap.min.css"> 
+    
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!--            js online includes          -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    
+    <!-- d3 v4 JavaScript visualization library -->
+    <script src="http://d3js.org/d3.v4.min.js"></script>
+
+    
+    
+    
+	{% load staticfiles %}
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!--            css local includes          -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!--    Load c3js charting library styles   -->
+    <link rel="stylesheet" href="{% static 'personal/css/c3.css' %}">
+    <!--         Load custom -AIM styles        -->
+    <link rel="stylesheet" href="{% static 'personal/css/styles.css' %}">
+    
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!--            js local includes           -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!--    jasondavies d3 word cloud library   -->
+	<script src="{% static 'personal/js/d3.layout.cloud.js' %}"></script>
+    <!--  Load c3js charting library JavaScript -->
+    <script src="{% static 'personal/js/c3.min.js' %}"></script>
+
+
+    <style>
+    .navbar.nav.navbar-toggle a:hover {
+        background-color: aqua;
+    }
+    .nav{
+        border-bottom: 1px lighter grey;
+    }
+
+   
+    </style>
+    
+</head>
+
+<body style="background-color:#fcfbf8;color:#5E5E5E">
+    <div class="container-fluid jumbotron" style="background-color:black;">
+        <div class="container">
+            <h1 style="color:white;margin-left:30px; "> 
+                {% load staticfiles %}
+             <img style="padding-bottom:5px;" src="{% static 'personal/img/logo.png' %}" alt="logo" width="50*6.03125" height="50"> 
+                <br>
+ 
+            </h1>
+              <p style="color:lightgrey;margin-left:30px; ">Analyze Approval Rating of political candidates from tweets sentiments. Multiple visualizations to identity trends and events. </p>
+              <p><a class="btn btn-primary btn-lg" style="margin-left:30px; " href="/personal/home">To App</a></p>
+        
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1>
+        Why someone has to do it?
+        </h1>
+        <h6>
+        Twitter is being populated with thousands of tweets every day. Number of tweets that are talking about politicians is somehow useless if we can't find an easy way to analyse the data. Just manually looking at the raw tweets doesn't scale, there's just too many of them. They remain unreasonable, unless we are aware of What are these people saying? What do they think? What are their opinions? How do they feel?
+            </h6>
+              <small style="padding-left:80%;color:#5E5E5E;">Approval Rating WebApp by - <cite title="Source Title">intelliVision</cite></small>
+        
+    </div>
+    
+
+
+</body>
+
+
+
+<!-- Data Extraction -->
+
+
+
+{% endblock %}

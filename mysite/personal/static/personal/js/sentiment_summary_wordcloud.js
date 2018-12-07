@@ -1,91 +1,4 @@
 
-var words = [
-    {
-        'text':'scandals',
-        'size':37
-    },
-    {
-        'text':'conspiracy',
-        'size':22
-    },
-    {
-        'text':'marathon',
-        'size':12
-    },
-    {
-        'text':'depression',
-        'size':18
-    },
-    {
-        'text':'children',
-        'size':13
-    },
-    {
-        'text':'women',
-        'size':9
-    },
-    {
-        'text':'LAW',
-        'size':23
-    },
-    {
-        'text':'man',
-        'size':5
-    },
-    {
-        'text':'power',
-        'size':8
-    },
-    {
-        'text':'breaking',
-        'size':11
-    },
-    {
-        'text':'NUCES',
-        'size':12
-    },
-    {
-        'text':'Dignity',
-        'size':45
-    },
-    {
-        'text':'Corruption',
-        'size':72
-    },
-    {
-        'text':'Pakistani',
-        'size':58
-    },
-    {
-        'text':'Ethics',
-        'size':27
-    },
-    {
-        'text':'replicate',
-        'size':22
-    },
-    {
-        'text':'judiciary',
-        'size':14
-    },
-    {
-        'text':'Government',
-        'size':31
-    },
-    {
-        'text':'research',
-        'size':9
-    },
-    {
-        'text':'Action',
-        'size':20
-    },
-    {
-        'text':'leadership',
-        'size':40
-    }
-
-];
 
 
 /* Sentitment Summary WordCloud */
@@ -96,9 +9,9 @@ var words = [
 // Encapsulate the word cloud functionality
 function wordCloud(selector) {
 
-
-
-    var wordScale = d3.scaleLinear().range([7,43]);
+    //before 7,43
+    console.log("20,70: ssw");
+    var wordScale = d3.scaleLinear().range([20,70]);
     wordScale
         .domain([d3.min(sentiment_summary_word_Data, function(d){return d._size; }),
                  d3.max(sentiment_summary_word_Data, function(d){return d._size; })

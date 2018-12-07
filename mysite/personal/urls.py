@@ -3,7 +3,7 @@ from . import views
 from django.urls import path
 
 
-
+'''
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^(\d+)/$', views.index, name='index'),
@@ -14,5 +14,17 @@ urlpatterns = [
     url(r'^index$', views.index, name='index'),
     url(r'^index/(\d+)$', views.index, name='index'),
     url(r'^index/(\d+)/$', views.index, name='index'),
-    url(r'^electoral$', views.electoral, name='electoral'),
-]
+    url(r'^electoral$', views.electoral, name='electoral'),]
+'''
+
+urlpatterns = [
+    url(r'^$', views.landing, name='landing'),
+    url(r'^(\d+)/$', views.index, name='index'),
+    url(r'^(\d+)$', views.index, name='index'),
+    url(r'^home$', views.index, name='index'),
+    url(r'^home/(\d+)/$', views.index, name='index'),
+    url(r'^home/(\d+)$', views.index, name='index'),
+    url(r'^index$', views.index, name='index'),
+    url(r'^index/(\d+)$', views.index, name='index'),
+    url(r'^index/(\d+)/$', views.index, name='index'),
+    url(r'^electoral$', views.electoral, name='electoral'),]
