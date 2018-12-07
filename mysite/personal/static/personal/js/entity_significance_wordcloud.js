@@ -7,9 +7,11 @@
 
 console.log("Data Rcvd : ",entity_significance_wordcloud_Data);
 //12,45 before
-
-console.log("Applying (7,43)");
-var wordScale = d3.scaleLinear().range([7,43]);
+//7,43 before --> fixed but smallest FONTS
+//17,70 before --> fixed but smaller fonts
+//20,80 locked -> font size looks ok
+console.log("Applying (20,80)");
+var wordScale = d3.scaleLinear().range([20,80]);
     wordScale
         .domain([d3.min(entity_significance_wordcloud_Data, function(d){return d._size; }),
                  d3.max(entity_significance_wordcloud_Data, function(d){return d._size; })
