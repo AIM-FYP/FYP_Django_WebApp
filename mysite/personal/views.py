@@ -185,7 +185,7 @@ def mywordcloudData(filename,topWords):
 def landing(request):
     return render(request, 'personal/landing.html')
 
-def index(request,num='5'):
+def index(request,num='6'):
     # ********************************************************* #
     # ********************************************************* #
     # ********************************************************* #
@@ -257,13 +257,13 @@ def index(request,num='5'):
         
         if(_positiveC==2 and _negativeC==2 and _neutralC==2):
             break
-        '''
+       
         if df['labels'][i]=='pos' and _positiveC<2:
             i_dict['sentiment']=df['labels'][i]
             i_dict['percentage']=str(df['confidence'][i])
             i_dict['text']=df['text'][i]
             i_dict['time']=df['tweet_time'][i]
-            
+        
             _positiveC+=1
             
         if df['labels'][i]=='neg' and _negativeC<2:
@@ -281,11 +281,8 @@ def index(request,num='5'):
             i_dict['time']=df['tweet_time'][i]
             
             _neutralC+=1
-        '''
-        i_dict['sentiment']=df['labels'][i]
-        i_dict['percentage']=str(df['confidence'][i])
-        i_dict['text']=df['text'][i]
-        i_dict['time']=df['tweet_time'][i]
+       
+   
         
         tweetdata.append(i_dict)
         

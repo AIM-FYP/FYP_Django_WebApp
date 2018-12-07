@@ -17,8 +17,8 @@
     <!-- ************************************** -->
     
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://bootswatch.com/3/superhero/bootstrap.min.css"> 
-    
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'personal/css/bootstrap.min.css' %}">
     <!-- ************************************** -->
     <!-- ************************************** -->
     <!-- ************************************** -->
@@ -27,18 +27,16 @@
     <!-- ************************************** -->
     <!-- ************************************** -->
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+    <script src="{% static 'personal/js/jquery.min.js' %}"></script>
+    
+    
     <!-- Latest compiled Bootstrap JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="{% static 'personal/js/bootstrap.min.js' %}"></script>
     
     <!-- d3 v4 JavaScript visualization library -->
-    <script src="http://d3js.org/d3.v4.min.js"></script>
+    <script src="{% static 'personal/js/d3.v4.min.js' %}"></script>
+ 
 
-    
-    
-    
-	{% load staticfiles %}
     <!-- ************************************** -->
     <!-- ************************************** -->
     <!-- ************************************** -->
@@ -71,7 +69,10 @@
     .nav{
         border-bottom: 1px lighter grey;
     }
-
+ 
+    html {
+      scroll-behavior: smooth;
+    }
    
     </style>
     
