@@ -12,7 +12,8 @@ import re
 import scipy
 import requests
 
-
+from datetime import datetime
+from datetime import timedelta
 
 
 def event_extraction(keywords, mindate='', maxdate='',argmax=''):
@@ -117,7 +118,10 @@ def event_extraction(keywords, mindate='', maxdate='',argmax=''):
     for article in semifinal:
         final.append([article['title'],article['date'],article['source'],article['link'],article['image']])
     
+    if len(final)==0:
+        return None
     return final[0]
+    
 
 
 def removeURL(tweet):
@@ -221,6 +225,41 @@ def getEntities(tweet,words_d):
             arr.append(w)
     return arr
 
+
+def keywords_for_event(tweets, topWords, arg_ngram_range=(1,1)):
+    
+    
+    nltkstopwords=set(stopwords.words('english'))
+    capsnltkwords=[]
+    for words in nltkstopwords:
+        capsnltkwords.append(words.upper())
+        capsnltkwords.append(words.capitalize())
+
+    _stopwords=list(nltkstopwords)+capsnltkwords
+    
+    cv1=CountVectorizer(ngram_range=arg_ngram_range,min_df=2,stop_words=_stopwords,max_features=40000,lowercase=False)
+    cv=cv1.fit_transform(tweets)
+    
+    vect=TfidfVectorizer(ngram_range=arg_ngram_range,min_df=2,stop_words=_stopwords,max_features=40000,lowercase=False)
+    vect=vect.fit_transform(tweets)
+    
+    words=top_mean_feats(vect,cv1.get_feature_names(),top_n=vect.shape[1])
+    
+    words_d=words.set_index('feature')['tfidf'].to_dict()
+    
+    freq = np.ravel(cv.sum(axis=0))
+    
+    vocab = [v[0] for v in sorted(cv1.vocabulary_.items(), key=operator.itemgetter(1))]
+    fdist = dict(zip(vocab, freq)) 
+    
+    words_d,fdist=removeDuplicates(words_d,fdist)
+    
+    sorted_x = sorted(words_d.items(), key=operator.itemgetter(1))
+    
+    sorted_x=sorted_x[-topWords:]
+    
+    return sorted_x
+
 def mywordcloudData(filename,topWords):
     df = pd.read_excel(filename) 
     df.head()
@@ -304,25 +343,43 @@ def index(request,num='6'):
     # ****************                       ****************** #
     # ********************************************************* #
     # ********************************************************* #
-    
+    candidate_name=''
+    arr_candidate_name=[]
     #  Change candidate files
     _file_Path=''
+    
     if num=='0':
         _file_Path  = BASE_DIR+"/personal/static/personal/csv/ImranKhan.xlsx"
+        candidate_name='Imran%20Khan'
+        arr_candidate_name=['imran','khan']
     elif num=='1':
         _file_Path  = BASE_DIR+"/personal/static/personal/csv/NawazSharif.xlsx"
+        candidate_name='Nawaz%20Sharif'
+        arr_candidate_name=['nawaz','sharif']
     elif num=='2':
         _file_Path  = BASE_DIR+"/personal/static/personal/csv/MaryamNawaz.xlsx"
+        candidate_name='Maryam%20Nawaz'
+        arr_candidate_name=['maryam','nawaz']
     elif num=='3':
         _file_Path  = BASE_DIR+"/personal/static/personal/csv/Zardari.xlsx"
+        candidate_name='Zardari'
+        arr_candidate_name=['zardari']
     elif num=='4':
         _file_Path  = BASE_DIR+"/personal/static/personal/csv/ShehbazSharif.xlsx"
+        candidate_name='Shehbaz%20Sharif'
+        arr_candidate_name=['shehbaz','sharif']
     elif num=='5':
         _file_Path  = BASE_DIR+"/personal/static/personal/csv/SheikhRashid.xlsx"
+        candidate_name='Sheikh%20Rashid'
+        arr_candidate_name=['sheikh','rashid']
     elif num=='6':
         _file_Path  = BASE_DIR+"/personal/static/personal/csv/AsadUmar.xlsx"
+        candidate_name='Asad%20Umar'
+        arr_candidate_name=['asad','umar']
     elif num=='7':
         _file_Path  = BASE_DIR+"/personal/static/personal/csv/BilawalBhutto.xlsx"
+        candidate_name='Bilawal%20Bhutto'
+        arr_candidate_name=['bilawal','bhutto']
 
         
     #  Read
@@ -331,12 +388,12 @@ def index(request,num='6'):
     df = pd.read_excel(_file_Path) 
     #  Predict
    
-    labels=classificationModel.predict_example(list(np.array(df['text'])))
-    df['labels']=labels
+    #labels=classificationModel.predict_example(list(np.array(df['text'])))
+    #df['labels']=labels
     
     df['text']=df['text'].apply(lambda x: removeURL(x))
     
-    df['labels']=df['labels'].apply(lambda x: changeLabelNames(x))
+    #df['labels']=df['labels'].apply(lambda x: changeLabelNames(x))
     
     #Get time
     df['tweet_time']=df['time'].apply(lambda x: str(x).split()[1][:-3])
@@ -423,7 +480,7 @@ def index(request,num='6'):
     sentiment_summary_donut_Data=percentdata
   
     
-    a=df.groupby(['line_time', 'labels']).size().reset_index(name='count') 
+    a=df.groupby(['line_time', 'labels']).size().reset_index(name='count')
     
     d = {}
     for i in a['line_time'].unique():
@@ -461,7 +518,7 @@ def index(request,num='6'):
     
     sentiment_summary_linechart_Data=data
     
-    print(sentiment_summary_linechart_Data)
+    #print(sentiment_summary_linechart_Data)
     '''counter_tym=1
     tymarr=[obj.time for obj in sentiment_summary_linechart_Data]
     for tym in tymarr:
@@ -480,9 +537,106 @@ def index(request,num='6'):
     entity_significance_bar_Data = bardata
     
     
-    
     a,b,c  =  mywordcloudData(_file_Path,21)
     sentiment_summary_word_Data=a
+    
+    # ********************************************************* #
+    # ********************************************************* #
+    # ********************************************************* #
+    # ****************                       ****************** #
+    # ****************    Events             ****************** #
+    # ****************                       ****************** #
+    # ********************************************************* #
+    # ********************************************************* #
+
+    c['time_YYYY-MM-DD']=c['time'].apply(lambda x: str(x).split(' ')[0])
+    
+    unique_Dates=np.unique(c['time_YYYY-MM-DD'])
+    data=[]
+    debugVar=[]
+    for date in unique_Dates:
+    
+        b=(c['time_YYYY-MM-DD']==date)
+        df_day=c[['processed','time','labels']][b]
+        keywordpairs = keywords_for_event(df_day['processed'],5,(2,2))[0]
+        keywords=[]
+        for pair in keywordpairs:
+            if arr_candidate_name[0] not in pair[0].lower():
+                if num!=3:
+                    if arr_candidate_name[1] not in pair[0].lower():
+                        keywords=pair.split(' ')
+                        break
+                else:
+                    keywords=pair.split(' ')
+                    break
+        keywords.append(candidate_name)
+        
+        print("keywords",keywords)
+        
+        datePLus1 = str(datetime.strptime(date, '%Y-%m-%d')+timedelta(days=1)).split(' ')[0]
+        event = event_extraction(keywords, date, datePLus1)
+        
+        # getting ready event
+
+        df_day['line_time']=df_day['time'].apply(lambda x: str(x).split()[1][:-6])        
+
+
+        #////
+
+        a=df_day.groupby(['line_time', 'labels']).size().reset_index(name='count') 
+
+        d = {}
+        for i in a['line_time'].unique():
+            d[i] = [{a['labels'][j]: a['count'][j]} for j in a[a['line_time']==i].index]
+
+        arr=['pos','neg','neu']
+        
+        for time in d.keys():
+            i_dict = {}
+
+            p_count = 0
+            n_count=0
+            nu_count=0
+            for dic in d[time]:
+                if 'pos' in dic.keys():
+                    i_dict["pos"]= str(dic['pos'])
+                    p_count+=1
+                if 'neg' in dic.keys():
+                    i_dict["neg"]=str(dic['neg'])
+                    n_count+=1
+                if 'neu' in dic.keys():
+                    i_dict["neu"]=str(dic['neu'])
+                    nu_count+=1
+
+            if p_count == 0:
+                i_dict["pos"]="0"
+            if n_count == 0:
+                i_dict["neg"]="0"
+            if nu_count==0:
+                i_dict["neu"]="0"
+            
+            i_dict['time'] = date+' '+time+':00'
+            
+            if event != None:
+                i_dict['event']='event'
+                i_dict['event-title']=event[0]
+                i_dict['event-date']=event[1]
+                i_dict['event-source']=event[2]
+                i_dict['event-url']=event[3]
+                i_dict['event-imgsrc']=event[4]
+            else:
+                i_dict['event']='none'
+                i_dict['event-title']='none'
+                i_dict['event-date']='none'
+                i_dict['event-source']='none'
+                i_dict['event-url']='none'
+                i_dict['event-imgsrc']='none'
+                
+            data.append(i_dict)
+
+        #////
+    event_chart_Data=data
+  
     
     
     raw_tweets_Data              = json.dumps(raw_tweets_Data)
@@ -491,8 +645,11 @@ def index(request,num='6'):
     entity_significance_wordcloud_Data= json.dumps(entity_significance_wordcloud_Data)
     entity_significance_bar_Data = json.dumps(entity_significance_bar_Data)
     sentiment_summary_linechart_Data= json.dumps(sentiment_summary_linechart_Data)
+    event_chart_Data = json.dumps(event_chart_Data)
+
     
-    return render(request, 'personal/home.html',{"raw_tweets_Data":raw_tweets_Data,"sentiment_summary_donut_Data":sentiment_summary_donut_Data,"sentiment_summary_word_Data":sentiment_summary_word_Data,"entity_significance_wordcloud_Data":entity_significance_wordcloud_Data,"entity_significance_bar_Data":entity_significance_bar_Data,"sentiment_summary_linechart_Data":sentiment_summary_linechart_Data,"sentiment_summary_linechart_Data":sentiment_summary_linechart_Data})
+    return render(request, 'personal/home.html',{"raw_tweets_Data":raw_tweets_Data,"sentiment_summary_donut_Data":sentiment_summary_donut_Data,"sentiment_summary_word_Data":sentiment_summary_word_Data,"entity_significance_wordcloud_Data":entity_significance_wordcloud_Data,"entity_significance_bar_Data":entity_significance_bar_Data,"sentiment_summary_linechart_Data":sentiment_summary_linechart_Data,"sentiment_summary_linechart_Data":sentiment_summary_linechart_Data,
+                                                 "event_chart_Data":event_chart_Data})
 
     
 def electoral(request):

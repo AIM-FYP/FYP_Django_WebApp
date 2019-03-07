@@ -1,6 +1,10 @@
-var event_chart_data=[
+// %m/%d/%Y %H:%M           "1/1/2013 02:00" 
+
+// %Y-%m-%d %H:%M          "2018-12-05 15:00"
+/*
+            var event_chart_Data=[
             {
-                "Date": "1/1/2013 01:00",
+                "time": "2018-12-05 15:00",
                 "pos" : 12,
                 "neg" : 30,
                 "neu" : 33,
@@ -13,7 +17,7 @@ var event_chart_data=[
               
             },
             {
-                "Date": "1/1/2013 02:00",
+                "time": "2018-12-05 16:00",
                 "pos" : 68,
                 "neg" : 20,
                 "neu" : 22,
@@ -26,7 +30,7 @@ var event_chart_data=[
                
             },
             {
-                "Date": "1/1/2013 03:00",
+                "time": "2018-12-05 17:00",
                 "pos" : 68,
                 "neg" : 35,
                 "neu" : 12,
@@ -39,7 +43,7 @@ var event_chart_data=[
               
             },
             {
-                "Date": "1/1/2013 04:00",
+                "time": "2018-12-05 18:00",
                 "pos" : 33,
                 "neg" : 29,
                 "neu" : 88,
@@ -52,7 +56,7 @@ var event_chart_data=[
                
             },
             {
-                "Date": "1/1/2013 05:00",
+                "time": "2018-12-05 19:00",
                 "pos" : 21,
                 "neg" : 45,
                 "neu" : 8,
@@ -65,7 +69,7 @@ var event_chart_data=[
               
             },
             {
-                "Date": "1/1/2013 06:00",
+                "time": "2018-12-05 20:00",
                 "pos" : 34,
                 "neg" : 67,
                 "neu" : 9,
@@ -78,7 +82,7 @@ var event_chart_data=[
                
             },
             {
-                "Date": "1/1/2013 07:00",
+                "time": "2018-12-05 21:00",
                 "pos" : 43,
                 "neg" : 87,
                 "neu" : 15,
@@ -91,7 +95,7 @@ var event_chart_data=[
               
             },
             {
-                "Date": "1/1/2013 08:00",
+                "time": "2018-12-05 22:00",
                 "pos" : 33,
                 "neg" : 23,
                 "neu" : 28,
@@ -103,10 +107,11 @@ var event_chart_data=[
                 "event-imgsrc": "none"
                
             }
-    ];
-    
-    
+            ];
+*/
 
+    console.log("event event event data here : ",event_chart_Data);
+    
     var svg = d3.select("svg#events"),
         margin = {top: 20, right: 20, bottom: 110, left: 40},
         margin2 = {top: 430, right: 20, bottom: 30, left: 40},
@@ -114,7 +119,7 @@ var event_chart_data=[
         height = +svg.attr("height") - margin.top - margin.bottom,
         height2 = +svg.attr("height") - margin2.top - margin2.bottom;
 
-    var parseDate = d3.timeParse("%m/%d/%Y %H:%M");
+    var parseDate = d3.timeParse("%Y-%m-%d %H:%M");
 
     var x = d3.scaleTime().range([0, width]),
         x2 = d3.scaleTime().range([0, width]),
@@ -136,25 +141,25 @@ var event_chart_data=[
         .on("zoom", zoomed);
 
         var line = d3.line()
-            .x(function (d) { return x(d.Date); })
+            .x(function (d) { return x(d.time); })
             .y(function (d) { return y(d.pos); });
     
         var line2 = d3.line()
-            .x(function (d) { return x(d.Date); })
+            .x(function (d) { return x(d.time); })
             .y(function (d) { return y(d.neg); });
     
         var line3 = d3.line()
-            .x(function (d) { return x(d.Date); })
+            .x(function (d) { return x(d.time); })
             .y(function (d) { return y(d.neu); });
         
         var context_line = d3.line()
-            .x(function (d) { return x2(d.Date); })
+            .x(function (d) { return x2(d.time); })
             .y(function (d) { return y2(d.pos); });
         var context_line2 = d3.line()
-            .x(function (d) { return x2(d.Date); })
+            .x(function (d) { return x2(d.time); })
             .y(function (d) { return y2(d.neg); });
         var context_line3 = d3.line()
-            .x(function (d) { return x2(d.Date); })
+            .x(function (d) { return x2(d.time); })
             .y(function (d) { return y2(d.neu); });
 
     
@@ -184,11 +189,11 @@ var event_chart_data=[
 
     
     
-      x.domain(d3.extent(event_chart_data, function(d) { return type(d).Date; }));
-      var ymax = d3.max([d3.max(event_chart_data, function (d) { return d.pos; }),
-                        d3.max(event_chart_data, function (d) { return d.neg; }),
-                        d3.max(event_chart_data, function (d) { return d.neu; })]);
-      y.domain([0, ymax+10]);//d3.max(event_chart_data, function (d) { return d.pos; })]);
+      x.domain(d3.extent(event_chart_Data, function(d) { return type(d).time; }));
+      var ymax = d3.max([d3.max(event_chart_Data, function (d) { return d.pos; }),
+                        d3.max(event_chart_Data, function (d) { return d.neg; }),
+                        d3.max(event_chart_Data, function (d) { return d.neu; })]);
+      y.domain([0, ymax+10]);//d3.max(event_chart_Data, function (d) { return d.pos; })]);
       x2.domain(x.domain());
       y2.domain(y.domain());
 
@@ -209,14 +214,14 @@ var event_chart_data=[
 
     
         Line_chart.append("path")
-            .datum(event_chart_data)
+            .datum(event_chart_Data)
             .attr("class", "line")
             .attr("d", line)
             .attr("id","line-pos")
             .style("stroke", '#38ed62' );
     
         Line_chart.append("path")
-            .datum(event_chart_data)
+            .datum(event_chart_Data)
             .attr("class", "line")
             .attr("d", line2)
             .attr("id","line-neg")
@@ -225,7 +230,7 @@ var event_chart_data=[
        
     
         Line_chart.append("path")
-            .datum(event_chart_data)
+            .datum(event_chart_Data)
             .attr("class", "line")
             .attr("d", line3)
             .attr("id","line-neu")
@@ -233,19 +238,19 @@ var event_chart_data=[
     
        
         context.append("path")
-            .datum(event_chart_data)
+            .datum(event_chart_Data)
             .attr("class", "line")
             .attr("d", context_line)
             .style("stroke", '#38ed62' );
     
         context.append("path")
-            .datum(event_chart_data)
+            .datum(event_chart_Data)
             .attr("class", "line")
             .attr("d", context_line2)
             .style("stroke", '#e35e57' );
     
         context.append("path")
-            .datum(event_chart_data)
+            .datum(event_chart_Data)
             .attr("class", "line")
             .attr("d", context_line3)
             .style("stroke", '#4a69e6' );
@@ -315,12 +320,12 @@ var event_chart_data=[
     svg.call(tip);
     
     var circlePoint1 = Line_chart.selectAll(".circle#circle1")
-        .data(event_chart_data).enter()
+        .data(event_chart_Data).enter()
           .append("circle")
           .attr("class", "circle")
           .attr("r", 3)
           .attr("cx", function(d) {
-            return x(d.Date);
+            return x(d.time);
           })
           .attr("cy", function(d) {
             return y(d.pos);
@@ -338,12 +343,12 @@ var event_chart_data=[
     
     
     var circlePoint2 =Line_chart.selectAll(".circle#circle2")
-        .data(event_chart_data).enter()
+        .data(event_chart_Data).enter()
           .append("circle")
           .attr("class", "circle")
           .attr("r", 3)
           .attr("cx", function(d) {
-            return x(d.Date);
+            return x(d.time);
           })
           .attr("cy", function(d) {
             return y(d.neg);
@@ -361,12 +366,12 @@ var event_chart_data=[
     
 
     var circlePoint3 =Line_chart.selectAll(".circle#circle3")
-        .data(event_chart_data).enter()
+        .data(event_chart_Data).enter()
           .append("circle")
           .attr("class", "circle")
           .attr("r", 3)
           .attr("cx", function(d) {
-            return x(d.Date);
+            return x(d.time);
           })
           .attr("cy", function(d) {
             return y(d.neu);
@@ -413,15 +418,15 @@ var event_chart_data=[
           .attr("d",line3);
       
       circlePoint1
-      .attr("cx", function (d) { return x(d.Date); })
+      .attr("cx", function (d) { return x(d.time); })
       .attr("cy", function (d) { return y(d.pos); });
         
       circlePoint2
-      .attr("cx", function (d) { return x(d.Date); })
+      .attr("cx", function (d) { return x(d.time); })
       .attr("cy", function (d) { return y(d.neg); });
         
       circlePoint3
-      .attr("cx", function (d) { return x(d.Date); })
+      .attr("cx", function (d) { return x(d.time); })
       .attr("cy", function (d) { return y(d.neu); });
         
         
@@ -447,15 +452,15 @@ var event_chart_data=[
         
        
       circlePoint1
-      .attr("cx", function (d) { return x(d.Date); })
+      .attr("cx", function (d) { return x(d.time); })
       .attr("cy", function (d) { return y(d.pos); });
         
       circlePoint2
-      .attr("cx", function (d) { return x(d.Date); })
+      .attr("cx", function (d) { return x(d.time); })
       .attr("cy", function (d) { return y(d.neg); });
         
       circlePoint3
-      .attr("cx", function (d) { return x(d.Date); })
+      .attr("cx", function (d) { return x(d.time); })
       .attr("cy", function (d) { return y(d.neu); });
     
             
@@ -467,7 +472,9 @@ var event_chart_data=[
     }
     
     function type(d) {
-      d.Date = parseDate(d.Date);
+      d.time = parseDate(d.time);
       d.pos = +d.pos;
+      d.neg = +d.neg;
+      d.neu = +d.neu;
       return d;
     }
