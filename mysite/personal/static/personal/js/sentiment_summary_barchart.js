@@ -43,6 +43,12 @@ var chart = c3.generate({
             neutrals
         ]
     },
+    zoom: {
+        enabled: true,
+        rescale:true,
+        onzoom: function (domain) { console.log("onzoom : ", domain); }
+        
+    },
     axis: {
         x: {
             type: 'timeseries',

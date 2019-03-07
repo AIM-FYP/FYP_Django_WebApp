@@ -10,6 +10,115 @@ from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 import re
 import scipy
+import requests
+
+
+
+
+def event_extraction(keywords, mindate='', maxdate='',argmax=''):
+
+    indian=['timesofindia.indiatimes.com',
+            'ndtv.com',
+            'indiatoday.intoday.in',
+            'indianexpress.com',
+            'thehindu.com',
+            'news18.com',
+            'firstpost.com',
+            'business-standard.com',
+            'dnaindia.com',
+            'deccanchronicle.com',
+            'oneindia.com',
+            'financialexpress.com',
+            'scroll.in',
+            'thehindubusinessline.com',
+            'thequint.com',
+            'outlookindia.com',
+            'freepressjournal.in',
+            'telanganatoday.com',
+            'asianage.com',
+            'chandigarhmetro.com',
+            'dailyexcelsior.com',
+            'teluguglobal.in',
+            'jaianndata.com',
+            'starofmysore.com',
+            'navhindtimes.in',
+            'nagpurtoday.in',
+            'arunachaltimes.in',
+            'risingkashmir.com',
+            'tentaran.com',
+            'yovizag.com',
+            'thesangaiexpress.com',
+            'orissapost.com',
+            'kashmirreader.com',
+            'news.statetimes.in',
+            'techgenyz.com',
+            'newstodaynet.com',
+            'mydigitalfc.com',
+            'bhakatnews.com',
+            'bilkulonline.com',
+            'mosesnews.com',
+            'emitpost.com',
+            '5abnow.com',
+            'thetimesofbengal.com',
+            'thenewshimachal.com',
+            'thenorthlines.com',
+            'themodernjournal.in',
+            'electiontamasha.in',
+            'themetrotalk.in',
+            'leagueofindia.com',
+            'indiannewsqld.com.au',
+            'newsekaaina.com',
+            'sportskanazee.com',
+            'newasians.website']
+    
+    maxvar=argmax #this is 10 by default
+    query=''
+
+    for i in range(0,len(keywords)):
+        if (i!=len(keywords)-1):
+            query+=keywords[i]+'%20'
+        else:
+            query+=keywords[i]
+        
+    
+    url = ('https://gnews.io/api/v2/?'
+           'q='+query+'&'
+           'country=pk&'
+           'max='+maxvar+'&'
+           'mindate='+mindate+'&'
+           'maxdate='+maxdate+'&'
+           'token=da1139b3cdd265ae5f09ecb4efd47b6b')
+    #mindate     Get articles that are more recent than the min date
+    #maxdate     Get articles that are less recent than the max date
+    response = requests.get(url,verify=False)
+    
+    jsonvar=response.json()
+    articles=jsonvar['articles']
+    
+    articles_notindian=[]
+    for article in articles:
+        if re.sub(r'https://www.','',article['website']) not in indian:
+            articles_notindian.append(article)
+    
+    if len(articles_notindian)!=0:
+        articles=articles_notindian.copy()
+    
+    
+    articles_wdimg=[]
+    for article in articles:
+        if article['image']!='':
+            articles_wdimg.append(article)
+    semifinal=[]
+    if len(articles_wdimg)==0:
+        semifinal=articles.copy()
+    else:
+        semifinal=articles_wdimg.copy()
+    final=[]
+    for article in semifinal:
+        final.append([article['title'],article['date'],article['source'],article['link'],article['image']])
+    
+    return final[0]
+
 
 def removeURL(tweet):
     tweet=re.sub('@[A-Za-z0-9_]+|https?://[^ ]+|^(RT )|( RT )', '', tweet)
@@ -352,6 +461,13 @@ def index(request,num='6'):
     
     sentiment_summary_linechart_Data=data
     
+    print(sentiment_summary_linechart_Data)
+    '''counter_tym=1
+    tymarr=[obj.time for obj in sentiment_summary_linechart_Data]
+    for tym in tymarr:
+        print(counter_tym, tym)
+        counter_tym+=1'''
+
     a,b,c  =  mywordcloudData(_file_Path,55)
     entity_significance_wordcloud_Data=a
     
