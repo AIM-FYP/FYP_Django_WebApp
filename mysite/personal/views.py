@@ -562,7 +562,7 @@ def index(request,num='6'):
         keywords=[]
         for pair in keywordpairs:
             if arr_candidate_name[0] not in pair[0].lower():
-                if num!=3:
+                if len(arr_candidate_name)==2:
                     if arr_candidate_name[1] not in pair[0].lower():
                         keywords=pair.split(' ')
                         break

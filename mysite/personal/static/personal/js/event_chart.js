@@ -303,19 +303,41 @@
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
       .call(zoom);
 
-    
+    alert("10:07am");
     var tip = d3.tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(function(d) {
           if (d.event=="none")
               return ""
-          return "<table border='0'><tr>"+
-                "<td align='left'>  <img style='vertical-align:bottom;' width='100%' height='100%' src='"+d["event-imgsrc"]+"'> </td>"+
-                "<td align='left' style='vertical-align: top;'> <strong>"+d["event-title"]+"</strong> <br><br><br><br>"+
-                " <span style='color:grey'>" + d["event-source"] + "</span> <br>"+
-                " <span style='font-size: 10px;color:grey'>" + d["event-date"] + "</span> </td></tr></table>";
+          return"<div class='divTable blueTable'>"+
+                "   <div class='divTableBody'>"+
+                "       <div class='divTableRow'>"+
+                "           <div class='divTableCell' style='background-color:#fcfbf8'>"+
+                "<table border='0'><tr>"+
+                "<td align='left'>  <img style='vertical-align:bottom;' width='100px' height='100px' src='"+d["event-imgsrc"]+"'> </td>"+
+                "<td align='left' style='vertical-align: top;'> <strong style='padding-left:10px'>"+d["event-title"]+"</strong> <br><br><br><br>"+
+                " <span style='color:grey;padding-left:10px;' >" + d["event-source"] + "</span> <br>"+
+                " <span style='font-size: 10px;color:grey;padding-left:10px;'>" + d["event-date"] + "</span> </td></tr></table>"+
+                "           </div>"+
+                "       </div>"+
+                "   </div>"+
+                "</div>";
       });
+
+
+/*
+to style size :  <div class="divTableCell">   style='height:200px;position:relative;'
+
+
+"<h8 style='font-weight:bold;float: right;font-family: serif; font-size: 13px;color: #4a69e6'>"+d.percentage+"%"+"</h8>"
+    +"<br>"+"<h8 style='margin: 0;position: absolute;top: 50%;left: 25%;transform: translate(-20%, -50%);'>"+d.text+"</h8>"
+    +"<h8 style='margin-top: 155px;float:right;font-size: 9px;color:grey;float:right;'>"
+    +"<img src='/static/personal/img/clock.png' %}' alt='Clock IMG' style='margin-right: 2px;float:left;width:14px;height:14px;'>"+d.time+"</h8>"
+*/
+                            
+
+
     
     svg.call(tip);
     

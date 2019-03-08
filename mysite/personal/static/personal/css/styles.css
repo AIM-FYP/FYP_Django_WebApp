@@ -148,21 +148,21 @@ div.blueTable {
   pointer-events: all;
 }
 .d3-tip {
-  line-height: 1;
+  line-height: 0;
   font-weight: bold;
   /*padding: 12px;*/
-  background: rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0);
   color: #df691a;
   /*border-radius: 2px;*/
 }
 
-/* Creates a small triangle extender for the tooltip */
+/* Creates a small triangle extender for the tooltip box-sizing: border-box;*/
 .d3-tip:after {
-  box-sizing: border-box;
+  
   display: inline;
-  font-size: 10px;
+  /*font-size: 10px;*/
   width: 100%;
-  line-height: 1;
+  line-height: 0;
   color: rgba(192,192,192,1);
   content: "\25BC";
   position: absolute;
